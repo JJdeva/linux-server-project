@@ -163,7 +163,7 @@ $ systemctl restart sshd
 3.   python 3.9.12 설치
 
 ```bash
-$ sh /root/proj/setting/admin/python_install.sh
+$ sh /home/ansible/proj/setting/admin/python_install.sh
 ```
 
 
@@ -253,7 +253,7 @@ become_ask_pass = false
 
 -   backend_install.yaml
 
-
+백엔드 경로는 /home/ansible/backend로 해주자. 여기에 manage.py가 있게
 
 
 
@@ -419,6 +419,91 @@ psql
 
 
 
+
+포스트그레스큐엘13 설치
+
+https://quiz12.tistory.com/99
+
+
+
+
+
+# psql 설정
+
+```bash
+su - postgres
+
+qsql
+
+sudo vi /var/lib/pgsql/13/data/postgresql.conf
+-> listen_addresses = '10.0.2.201'
+
+
+sudo vi /var/lib/pgsql/13/data/pg_hba.conf
+host all 모두 10.0.2.0/24 md5
+
+
+```
+
+
+
+
+
+## gunicorn 서비스
+
+proj.env생성 -> /home/ansible/backend
+
+proj.service만들기 --> /etc/systemd/system/proj.service
+
+```bash
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/home/ansible/backend
+EnvironmentFile=/home/ansible/backend/proj.env
+ExecStart=/usr/local/bin/gunicorn \
+        --workers 2 \
+        --bind unix:/tmp/gunicorn.sock \
+        proj.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+```
+
+서비스 시작
+
+```bash
+sudo system enable proj
+sudo systemctl start proj
+```
+
+
+
+## nginx 설정
+
+/etc/nginx/conf.d/default.conf
+
+```bash
+server {
+        listen 80;
+        server_name 10.0.2.201;
+
+        location = /favicon.ico { access_log off; log_not_found off; }
+
+        location /static {
+                alias /home/ansible/static;
+        }
+
+        location / {
+                include proxy_params;
+                proxy_pass http://unix:/tmp/gunicorn.sock;
+        }
+}
+```
 
 
 

@@ -1,0 +1,7 @@
+---
+- name: start runserver backend
+  hosts: backend
+  become: yes
+  tasks:
+  - name: start server
+    command: gunicorn proj.wsgi:application --bind 10.0.2.201:8000

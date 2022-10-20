@@ -1,0 +1,9 @@
+---
+- name: static file copy
+  hosts: nginx
+  become: yes
+  tasks:
+  - name: static file copy
+    copy:
+      src: /home/ansible/proj/back/posts/static
+      dest: /home/ansible/static

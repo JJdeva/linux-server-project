@@ -26,3 +26,5 @@ source /home/ansible/.bashrc
 ## 필요패키지 설치
 pip3 install --upgrade --ignore-installed pip setuptools
 pip3 install ansible
+pip3 install django==3.2
+pip3 install virtualenv

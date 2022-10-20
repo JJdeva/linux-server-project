@@ -1,0 +1,12 @@
+.error {
+    color: red;
+}
+
+.title {
+    width: 400px;
+}
+
+.content {
+    width: 400px;
+    height: 600px;
+}

@@ -1,0 +1,25 @@
+---
+- name: install nginx
+  hosts: nginx
+  become: yes
+  tasks:
+  - name: copy nginx repo
+    copy:
+      src: /home/ansible/setting/nginx/nginx.repo
+      dest: /etc/yum.repos.d/nginx.repo
+  - name: install nginx web server
+    yum:
+      name: nginx
+  - name: start nginx service
+    service:
+      name: nginx
+      enabled: yes
+      state: started
+  - name: firewall
+    firewalld:
+      service: nginx
+      permanent: yes
+      port: 80/tcp
+      state: enabled
+
+      

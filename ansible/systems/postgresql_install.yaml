@@ -1,0 +1,12 @@
+---
+- name: Install postgresql-13
+  hosts: db
+  become: yes
+  tasks:
+  - name: copy postgresql_install.sh
+    copy:
+      src: /home/ansible/proj/setting/db/postgresql_install.sh
+      dest: /home/ansible/postgresql_install.sh
+      mode: '0755'
+  - name: execute postgresql_install.sh
+    command: sh /home/ansible/postgresql_install.sh
