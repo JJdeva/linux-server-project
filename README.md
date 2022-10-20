@@ -48,11 +48,13 @@ root 계정으로 작업 (/root)
 
 1.   git 설치 및 repository clone -> 4개 서버 모두
      -   편의를 위해 디렉토리명을 proj로 변경
+     -   권한 변경 -> 755
 
 ```bash
 $ yum install -y git
 $ git clone https://github.com/JJdeva/linux-server-project.git
 $ rename linux-server-project proj linux-server-project
+$ chmod -R 755 proj
 ```
 
 
@@ -62,7 +64,7 @@ $ rename linux-server-project proj linux-server-project
 
 ```bash
 # sudo_setting
-$ sh /root/proj/setting/base/sudo_setting.sh
+$ sh /home/ansible/proj/setting/base/sudo_setting.sh
 ```
 
 
@@ -71,20 +73,20 @@ $ sh /root/proj/setting/base/sudo_setting.sh
      ssh가 안될 때 실행
 
 ```bash
-$ sh /root/proj/setting/base/ssh_setting.sh
+$ sh /home/ansible/proj/setting/base/ssh_setting.sh
 ```
 
 4.   hostname 변경
 
 ```bash
 #admin
-$ hostnamectl set-hostname admin
+$ sudo hostnamectl set-hostname admin
 # nginx
-$ hostnamectl set-hostname nginx
+$ sudo hostnamectl set-hostname nginx
 # backend
-$ hostnamectl set-hostname backend
+$ sudo hostnamectl set-hostname backend
 # db
-$ hostnamectl set-hostname db
+$ sudo hostnamectl set-hostname db
 ```
 
 
@@ -104,13 +106,13 @@ $ hostnamectl set-hostname db
 
 ```bash
 # admin
-$ sh /root/proj/setting/admin/admin_net_setting.sh
+$ sh /home/ansible/proj/setting/admin/admin_net_setting.sh
 # nginx
-$ sh /root/proj/setting/nginx/nginx_net_setting.sh
+$ sh /home/ansible/proj/setting/nginx/nginx_net_setting.sh
 # backend
-$ sh /root/proj/setting/backend/backend_net_setting.sh
+$ sh /home/ansible/proj/setting/backend/backend_net_setting.sh
 # db
-$ sh /root/proj/setting/db/db_net_setting.sh
+$ sh /home/ansible/proj/setting/db/db_net_setting.sh
 ```
 
 
@@ -120,7 +122,7 @@ $ sh /root/proj/setting/db/db_net_setting.sh
 
 ```bash
 # admin, nginx, backend, db 모두 같게 진행
-$ cat /root/proj/setting/base/hosts > /etc/hosts
+$ cat /home/ansible/proj/setting/base/hosts >> /etc/hosts
 ```
 
 
@@ -235,6 +237,24 @@ become_ask_pass = false
 
 ### playbook
 
+#### nginx 서버 설정
+
+-   nginx_install.yaml
+
+
+
+#### postgresql 설치
+
+-   posgresql_install.yaml
+
+
+
+#### backend 구성
+
+-   backend_install.yaml
+
+
+
 
 
 
@@ -255,7 +275,19 @@ Directory Tree
 
 
 
+# Virtualbox 설정
 
+**모든 서버 동일 환경으로 구성**
+
+OS : CentOS 7.9
+
+Memory : 2048 MB
+
+DISK : VHD 동적할당 40GB
+
+ROOT : root / qwer1234
+
+USER : ansible / qwer1234
 
 
 
