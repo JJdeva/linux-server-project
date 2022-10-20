@@ -18,3 +18,11 @@ echo "alias python3=\"$pydir\"" >> /home/ansible/.bashrc
 echo "alias pip3=\"$pypip\"" >> /home/ansible/.bashrc
 echo "alias python3=\"$pydir\"" >> /root/.bashrc
 echo "alias pip3=\"$pypip\"" >> /root/.bashrc
+
+## .bashrc 적용
+source /root/.bashrc
+source /home/ansible/.bashrc
+
+## 필요패키지 설치
+pip3 install --upgrade --ignore-installed pip setuptools
+pip3 install ansible
